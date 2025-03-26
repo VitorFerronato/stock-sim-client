@@ -17,7 +17,7 @@
         <thead>
           <tr>
             <th>Date</th>
-            <th>Type</th>
+            <th>Qtde</th>
             <th>Symbol</th>
             <th>Quantity</th>
             <th>Price</th>
@@ -48,9 +48,9 @@
     </div>
 
     <div class="actions">
-      <router-link to="/dashboard" class="secondary-button"
-        >Back to Dashboard</router-link
-      >
+      <button @click="$router.push('/dashboard')" class="back-button">
+        Back to dashboard
+      </button>
     </div>
   </div>
 </template>
@@ -77,9 +77,9 @@ const formatCurrency = (value) => {
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat("pt-BR", {
-    year: "numeric",
-    month: "short",
     day: "numeric",
+    month: "short",
+    year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
   }).format(date);
@@ -88,14 +88,17 @@ const formatDate = (dateString) => {
 
 <style scoped>
 .transactions-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+  padding: 2rem;
+  background-color: #0a0d1c;
+  min-height: 100vh;
+  color: white;
 }
 
 h1 {
+  font-size: 2rem;
+  color: white;
   margin-bottom: 2rem;
-  color: #2d3748;
+  font-weight: normal;
 }
 
 .empty-transactions {
@@ -112,8 +115,11 @@ h1 {
 }
 
 .transactions-content {
+  background-color: #151933;
+  border: 1px solid #7c3aed;
+  border-radius: 0.5rem;
+  overflow: hidden;
   margin-bottom: 2rem;
-  overflow-x: auto;
 }
 
 .transactions-table {
@@ -121,78 +127,63 @@ h1 {
   border-collapse: collapse;
 }
 
-.transactions-table th,
+.transactions-table th {
+  text-align: left;
+  padding: 1rem;
+  color: #8888a0;
+  font-weight: normal;
+  border-bottom: 1px solid #2a2f4c;
+}
+
 .transactions-table td {
   padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.transactions-table th {
-  background-color: #f7fafc;
-  font-weight: 600;
-  color: #4a5568;
-}
-
-.transactions-table tr:hover {
-  background-color: #f7fafc;
+  color: white;
+  border-bottom: 1px solid #2a2f4c;
 }
 
 .transaction-type {
   display: inline-block;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
 }
 
 .transaction-type.buy {
-  background-color: #ebfaf0;
-  color: #38a169;
+  background-color: #166534;
+  color: white;
 }
 
 .transaction-type.sell {
-  background-color: #fef1f1;
-  color: #e53e3e;
+  background-color: #991b1b;
+  color: white;
 }
 
 .actions {
   display: flex;
   justify-content: flex-end;
-  margin-top: 2rem;
 }
 
-.primary-button {
-  background-color: #4299e1;
+.back-button {
+  background-color: #7c3aed;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.3s;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.primary-button:hover {
-  background-color: #3182ce;
-}
-
-.secondary-button {
-  background-color: #2d3748;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  text-decoration: none;
-  display: inline-block;
 }
 
-.secondary-button:hover {
-  background-color: #1a202c;
+.back-button:hover {
+  background-color: #6d28d9;
+}
+
+@media (max-width: 768px) {
+  .transactions-content {
+    overflow-x: auto;
+  }
+
+  .transactions-table {
+    min-width: 800px;
+  }
 }
 </style>

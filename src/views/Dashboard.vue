@@ -1,101 +1,61 @@
 <template>
-  <div class="dashboard-container">
-    <h1>Dashboard</h1>
-
-    <div class="welcome-card">
-      <h2>Welcome, {{ authStore.user?.name }}</h2>
-      <p>Here's your investment summary</p>
-    </div>
-
-    <div class="refresh-button-container">
-      <button
-        @click="refreshPortfolio"
-        :disabled="isLoading"
-        class="refresh-button"
-      >
-        {{ isLoading ? "Refreshing..." : "Refresh Portfolio" }}
+  <div class="dashboard">
+    <!-- Header Section -->
+    <div class="header">
+      <h1>Welcome, {{ userName }}!</h1>
+      <p class="subtitle">Here's your investment summary</p>
+      <button class="refresh-btn" @click="refreshPortfolio">
+        <span class="refresh-icon">⟳</span> Refresh portfolio
       </button>
     </div>
 
-    <div class="stats-grid">
-      <!-- Total Balance Card -->
-      <div class="stat-card">
-        <div class="stat-title">Total Balance</div>
-        <div class="stat-value">{{ formatCurrency(totalBalance) }}</div>
-        <div class="stat-description">Your total portfolio value</div>
+    <!-- Summary Cards -->
+    <div class="summary-grid">
+      <div class="summary-card">
+        <h2>Total Balance</h2>
+        <div class="amount">$ {{ formatNumber(totalBalance) }}</div>
+        <p class="description">Your total portfolio value</p>
       </div>
 
-      <!-- Available Cash Card -->
-      <div class="stat-card">
-        <div class="stat-title">Available Cash</div>
-        <div class="stat-value">
-          {{ formatCurrency(portfolioStore.availableBalance) }}
-        </div>
-        <div class="stat-description">Cash available for investment</div>
+      <div class="summary-card">
+        <h2>Available Cash</h2>
+        <div class="amount">$ {{ formatNumber(availableCash) }}</div>
+        <p class="description">Cash available for investment</p>
       </div>
 
-      <!-- Invested Amount Card -->
-      <div class="stat-card">
-        <div class="stat-title">Invested Amount</div>
-        <div class="stat-value">
-          {{ formatCurrency(portfolioStore.totalInvestment) }}
-        </div>
-        <div class="stat-description">Total amount invested</div>
+      <div class="summary-card">
+        <h2>Invested Amount</h2>
+        <div class="amount">$ {{ formatNumber(investedAmount) }}</div>
+        <p class="description">Total amount invested</p>
       </div>
 
-      <!-- Current Portfolio Value Card -->
-      <div class="stat-card">
-        <div class="stat-title">Portfolio Value</div>
-        <div class="stat-value">
-          {{ formatCurrency(portfolioStore?.portfolioValue) }}
-        </div>
-        <div class="stat-description">Current value of your investments</div>
+      <div class="summary-card">
+        <h2>Portfolio Value</h2>
+        <div class="amount">$ {{ formatNumber(portfolioValue) }}</div>
+        <p class="description">Current value of your investments</p>
       </div>
 
-      <!-- Gain/Loss Card -->
-      <div
-        class="stat-card"
-        :class="{
-          gain: portfolioStore.totalGainLoss > 0,
-          loss: portfolioStore.totalGainLoss < 0,
-        }"
-      >
-        <div class="stat-title">Total Gain/Loss</div>
-        <div class="stat-value">
-          {{ formatCurrency(portfolioStore.totalGainLoss) }}
-        </div>
-        <div class="stat-percentage">
-          {{ formatPercentage(portfolioStore.totalGainLossPercentage) }}
-        </div>
+      <div class="summary-card">
+        <h2>Total Gain/Loss</h2>
+        <div class="amount">$ {{ formatNumber(totalGainLoss) }}</div>
+        <p class="description">{{ gainLossPercentage }}%</p>
       </div>
 
-      <!-- Stocks Held Card -->
-      <div class="stat-card">
-        <div class="stat-title">Stocks Held</div>
-        <div class="stat-value">{{ portfolioStore.portfolio.length }}</div>
-        <div class="stat-description">
-          Number of different stocks in portfolio
-        </div>
+      <div class="summary-card">
+        <h2>Stocks Held</h2>
+        <div class="amount">{{ stocksHeld }}</div>
+        <p class="description">Number of different stocks in portfolio</p>
       </div>
     </div>
 
-    <div class="section-title">
-      <h2>Your Investment Portfolio</h2>
-    </div>
-
-    <div v-if="portfolioStore.portfolio.length === 0" class="empty-portfolio">
-      <p>You don't have any investments yet.</p>
-      <router-link to="/search" class="primary-button"
-        >Start Investing</router-link
-      >
-    </div>
-
-    <div v-else class="portfolio-table-container">
+    <!-- Portfolio Table -->
+    <div class="portfolio-section">
+      <h2>Your investment portfolio</h2>
       <table class="portfolio-table">
         <thead>
           <tr>
             <th>Symbol</th>
-            <th>Quantity</th>
+            <th>Qtde</th>
             <th>Purchase Price</th>
             <th>Current Price</th>
             <th>Total Value</th>
@@ -103,279 +63,188 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="stock in portfolioStore.portfolio" :key="stock.symbol">
+          <tr v-for="stock in portfolio" :key="stock.symbol">
             <td>{{ stock.symbol }}</td>
             <td>{{ stock.quantity }}</td>
-            <td>{{ formatCurrency(stock.purchasePrice) }}</td>
-            <td>{{ formatCurrency(stock.currentPrice) }}</td>
-            <td>{{ formatCurrency(stock.currentPrice * stock.quantity) }}</td>
-            <td
-              :class="{
-                'gain-text': stock.currentPrice > stock.purchasePrice,
-                'loss-text': stock.currentPrice < stock.purchasePrice,
-              }"
-            >
-              {{
-                formatCurrency(
-                  (stock.currentPrice - stock.purchasePrice) * stock.quantity
-                )
-              }}
-              ({{
-                formatPercentage(
-                  ((stock.currentPrice - stock.purchasePrice) /
-                    stock.purchasePrice) *
-                    100
-                )
-              }})
+            <td>$ {{ formatNumber(stock.purchasePrice) }}</td>
+            <td>$ {{ formatNumber(stock.currentPrice) }}</td>
+            <td>$ {{ formatNumber(stock.totalValue) }}</td>
+            <td>
+              R$ {{ formatNumber(stock.gainLoss) }} ({{
+                stock.gainLossPercentage
+              }}%)
             </td>
           </tr>
         </tbody>
       </table>
     </div>
 
+    <!-- Action Buttons -->
     <div class="action-buttons">
-      <router-link to="/search" class="primary-button">Buy Stocks</router-link>
-      <router-link to="/portfolio" class="secondary-button"
-        >Manage Portfolio</router-link
-      >
+      <button class="manage-btn">Manage Portfolio</button>
+      <button class="buy-btn">Buy Stocks</button>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted, computed } from "vue";
-import { usePortfolioStore } from "../store/portfolio";
-import { useAuthStore } from "../store/auth";
-
-const portfolioStore = usePortfolioStore();
-const authStore = useAuthStore();
-const isLoading = ref(false);
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
+<script>
+export default {
+  name: "Dashboard",
+  data() {
+    return {
+      userName: "Vitor Ferronato",
+      totalBalance: 100000.0,
+      availableCash: 99160.0,
+      investedAmount: 840.0,
+      portfolioValue: 840.0,
+      totalGainLoss: 25.94,
+      gainLossPercentage: 2.35,
+      stocksHeld: 2,
+      portfolio: [
+        {
+          symbol: "PETR4F.SAO",
+          quantity: 10,
+          purchasePrice: 37.04,
+          currentPrice: 37.04,
+          totalValue: 370.4,
+          gainLoss: 0.0,
+          gainLossPercentage: 0.0,
+        },
+        {
+          symbol: "WEGE3F.SAO",
+          quantity: 10,
+          purchasePrice: 46.96,
+          currentPrice: 46.96,
+          totalValue: 469.6,
+          gainLoss: 0.0,
+          gainLossPercentage: 0.0,
+        },
+      ],
+    };
+  },
+  methods: {
+    formatNumber(value) {
+      return value.toFixed(2).replace(".", ",");
+    },
+    refreshPortfolio() {
+      // Implement refresh logic here
+    },
+  },
 };
-
-const formatPercentage = (value) => {
-  return `${value.toFixed(2)}%`;
-};
-
-const totalBalance = computed(() => {
-  return portfolioStore.availableBalance + portfolioStore?.portfolioValue;
-});
-
-const refreshPortfolio = async () => {
-  isLoading.value = true;
-  await portfolioStore.updateStockPrices();
-  isLoading.value = false;
-};
-
-onMounted(async () => {
-  await refreshPortfolio();
-});
 </script>
 
 <style scoped>
-.dashboard-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+.dashboard {
+  padding: 2rem;
+  background-color: #0a0d1c;
+  color: white;
+  min-height: 100vh;
 }
 
-h1 {
-  margin-bottom: 1.5rem;
-  color: #2d3748;
-}
-
-.welcome-card {
-  background-color: #ebf8ff;
-  border-radius: 8px;
-  padding: 1.5rem;
+.header {
   margin-bottom: 2rem;
-  border-left: 4px solid #4299e1;
+  position: relative;
 }
 
-.welcome-card h2 {
-  color: #2b6cb0;
+.header h1 {
+  font-size: 2rem;
   margin-bottom: 0.5rem;
 }
 
-.welcome-card p {
-  color: #4a5568;
+.subtitle {
+  color: #8888a0;
 }
 
-.refresh-button-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1.5rem;
-}
-
-.refresh-button {
-  background-color: #4299e1;
+.refresh-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #7c3aed;
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.refresh-button:hover {
-  background-color: #3182ce;
-}
-
-.refresh-button:disabled {
-  background-color: #a0aec0;
-  cursor: not-allowed;
-}
-
-.stats-grid {
+.summary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
-.stat-card {
-  background-color: white;
-  border-radius: 8px;
+.summary-card {
+  background-color: #151933;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 0.5rem;
 }
 
-.stat-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+.summary-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
 }
 
-.stat-card.gain {
-  border-left: 4px solid #48bb78;
-}
-
-.stat-card.loss {
-  border-left: 4px solid #f56565;
-}
-
-.stat-title {
-  font-size: 1rem;
-  color: #4a5568;
+.amount {
+  font-size: 2rem;
+  font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
-.stat-value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #2d3748;
-  margin-bottom: 0.25rem;
+.description {
+  color: #8888a0;
+  font-size: 0.9rem;
 }
 
-.stat-description {
-  font-size: 0.875rem;
-  color: #718096;
-}
-
-.stat-percentage {
-  font-size: 0.875rem;
-  color: #718096;
-}
-
-.section-title {
-  margin: 2rem 0 1rem;
-}
-
-.section-title h2 {
-  color: #2d3748;
-  font-size: 1.5rem;
-}
-
-.empty-portfolio {
-  background-color: #f7fafc;
-  border-radius: 8px;
-  padding: 2rem;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.empty-portfolio p {
-  margin-bottom: 1rem;
-  color: #4a5568;
-}
-
-.portfolio-table-container {
-  margin-bottom: 2rem;
-  overflow-x: auto;
+.portfolio-section {
+  margin-top: 2rem;
 }
 
 .portfolio-table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.portfolio-table th,
-.portfolio-table td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+  margin-top: 1rem;
 }
 
 .portfolio-table th {
-  background-color: #f7fafc;
-  font-weight: 600;
-  color: #4a5568;
+  text-align: left;
+  padding: 1rem;
+  color: #8888a0;
+  border-bottom: 1px solid #2a2f4c;
 }
 
-.portfolio-table tr:hover {
-  background-color: #f7fafc;
-}
-
-.gain-text {
-  color: #48bb78;
-}
-
-.loss-text {
-  color: #f56565;
+.portfolio-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #2a2f4c;
 }
 
 .action-buttons {
+  margin-top: 2rem;
   display: flex;
   gap: 1rem;
-  margin-top: 2rem;
+  justify-content: flex-end;
 }
 
-.primary-button {
-  background-color: #4299e1;
-  color: white;
-  border: none;
+.manage-btn,
+.buy-btn {
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
-  transition: background-color 0.3s;
-  text-decoration: none;
-  display: inline-block;
+  font-weight: 500;
 }
 
-.primary-button:hover {
-  background-color: #3182ce;
+.manage-btn {
+  background-color: transparent;
+  border: 1px solid #7c3aed;
+  color: #7c3aed;
 }
 
-.secondary-button {
-  background-color: #2d3748;
-  color: white;
+.buy-btn {
+  background-color: #7c3aed;
   border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.secondary-button:hover {
-  background-color: #1a202c;
+  color: white;
 }
 </style>

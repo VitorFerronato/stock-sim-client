@@ -90,11 +90,7 @@ const logout = () => {
 }
 
 main {
-  flex: 1;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
+  background-color: #1a202c;
 }
 
 footer {

@@ -1,12 +1,12 @@
 <template>
   <div class="home-container">
     <div class="hero">
-      <h1>Welcome to StockSim</h1>
+      <h1>Welcome to Stock Sim</h1>
       <h2>Learn investing with zero risk using virtual currency</h2>
 
       <div class="features">
         <div class="feature-card">
-          <h3>Start with R$ 100,000</h3>
+          <h3>Start with $ 100,000</h3>
           <p>
             Begin your investment journey with a generous amount of virtual
             money
@@ -23,28 +23,15 @@
           <p>Monitor your portfolio performance and transaction history</p>
         </div>
       </div>
-
-      <div class="cta-buttons">
-        <button
-          v-if="!authStore.isLoggedIn"
-          class="primary-button"
-          @click="navigateToRegister"
-        >
-          Get Started
-        </button>
-        <button v-else class="secondary-button" @click="navigateToDashboard">
-          Go to Dashboard
-        </button>
-      </div>
     </div>
 
     <div class="how-it-works">
-      <h2>How It Works</h2>
+      <h2>How it works?</h2>
 
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
-          <h3>Create an Account</h3>
+          <h3>Create an account</h3>
           <p>Sign up to get started with your virtual portfolio</p>
         </div>
 
@@ -55,16 +42,29 @@
         </div>
 
         <div class="step">
-          <div class="step-number">3</div>
+          <div class="step-number">2</div>
           <h3>Buy & Sell</h3>
-          <p>Make trades with your virtual R$ 100,000</p>
+          <p>Make trades with your virtual $ 100,000</p>
         </div>
 
         <div class="step">
-          <div class="step-number">4</div>
+          <div class="step-number">2</div>
           <h3>Track Performance</h3>
           <p>Monitor your gains and losses over time</p>
         </div>
+      </div>
+
+      <div class="cta-buttons">
+        <button
+          v-if="!authStore.isLoggedIn"
+          class="get-started-btn"
+          @click="navigateToRegister"
+        >
+          Get started
+        </button>
+        <button v-else class="dashboard-btn" @click="navigateToDashboard">
+          Go to Dashboard
+        </button>
       </div>
     </div>
   </div>
@@ -81,15 +81,58 @@ const navigateToRegister = () => {
   router.push("/register");
 };
 
+const navigateToLogin = () => {
+  router.push("/login");
+};
+
 const navigateToDashboard = () => {
   router.push("/dashboard");
 };
 </script>
 
 <style scoped>
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: transparent;
+}
+
+.logo {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.register-btn {
+  background-color: transparent;
+  color: #b794f4;
+  border: 1px solid #b794f4;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.login-btn {
+  background-color: #9f7aea;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
 .home-container {
-  max-width: 1200px;
   margin: 0 auto;
+  padding: 2rem 8rem;
 }
 
 .hero {
@@ -98,117 +141,119 @@ const navigateToDashboard = () => {
 }
 
 .hero h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin-bottom: 1rem;
-  color: #1a202c;
+  color: white;
 }
 
 .hero h2 {
   font-size: 1.5rem;
-  color: #4a5568;
-  margin-bottom: 3rem;
+  color: #a0aec0;
+  margin-bottom: 4rem;
 }
 
 .features {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 4rem;
 }
 
 .feature-card {
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  background-color: white;
-  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #b794f4;
+  transition: transform 0.3s;
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card h3 {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: #2d3748;
-}
-
-.cta-buttons {
-  margin-top: 2rem;
-}
-
-.primary-button {
-  background-color: #4299e1;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
   color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.primary-button:hover {
-  background-color: #3182ce;
-}
-
-.secondary-button {
-  background-color: #2d3748;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.secondary-button:hover {
-  background-color: #1a202c;
+.feature-card p {
+  color: #a0aec0;
 }
 
 .how-it-works {
-  padding: 3rem 1rem;
-  background-color: #f7fafc;
-  border-radius: 8px;
-  margin-bottom: 3rem;
+  padding: 4rem 1rem;
+  text-align: center;
 }
 
 .how-it-works h2 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  color: #1a202c;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: white;
 }
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
 }
 
 .step {
   text-align: center;
-  padding: 1.5rem;
 }
 
 .step-number {
-  background-color: #4299e1;
+  background-color: #9f7aea;
   color: white;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 1rem;
+  margin: 0 auto 1.5rem;
+  font-size: 1.25rem;
   font-weight: bold;
 }
 
 .step h3 {
-  margin-bottom: 0.5rem;
-  color: #2d3748;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 1.25rem;
+}
+
+.step p {
+  color: #a0aec0;
+}
+
+.get-started-btn {
+  background-color: #9f7aea;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.get-started-btn:hover {
+  background-color: #805ad5;
+}
+
+.dashboard-btn {
+  background-color: #2d3748;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dashboard-btn:hover {
+  background-color: #1a202c;
 }
 </style>
