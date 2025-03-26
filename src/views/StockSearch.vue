@@ -263,26 +263,30 @@ const formatCurrency = (value) => {
 
 <style scoped>
 .stock-search-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
+  padding: 2rem;
+  background-color: #0a0d1c;
+  min-height: 100vh;
+  color: white;
 }
 
 h1 {
-  margin-bottom: 1.5rem;
-  color: #2d3748;
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: normal;
 }
 
 h2 {
-  margin: 2rem 0 1rem;
-  color: #2d3748;
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .search-card {
-  background-color: white;
-  border-radius: 8px;
+  background-color: #151933;
+  border: 1px solid #7c3aed;
+  border-radius: 0.5rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
 }
 
@@ -294,38 +298,40 @@ h2 {
 .search-form input {
   flex: 1;
   padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
+  background-color: #0a0d1c;
+  border: 1px solid #2a2f4c;
+  border-radius: 0.25rem;
+  color: white;
   font-size: 1rem;
 }
 
 .search-button {
-  background-color: #4299e1;
+  background-color: #7c3aed;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .search-button:hover {
-  background-color: #3182ce;
+  background-color: #6d28d9;
 }
 
 .search-button:disabled {
-  background-color: #a0aec0;
+  background-color: #2a2f4c;
   cursor: not-allowed;
 }
 
 .error-message {
-  color: #e53e3e;
+  color: #ef4444;
   margin-top: 0.5rem;
   font-size: 0.875rem;
 }
 
 .success-message {
-  color: #48bb78;
+  color: #10b981;
   margin-top: 0.5rem;
   font-size: 0.875rem;
 }
@@ -334,7 +340,7 @@ h2 {
   margin-top: 1rem;
   font-size: 0.875rem;
   text-align: right;
-  color: #4a5568;
+  color: #8888a0;
 }
 
 .results-grid {
@@ -344,29 +350,28 @@ h2 {
 }
 
 .stock-card {
-  background-color: white;
-  border-radius: 8px;
+  background-color: #151933;
+  border: 1px solid #7c3aed;
+  border-radius: 0.5rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s;
 }
 
 .stock-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  background-color: #f7fafc;
+  background-color: #1a1f3d;
 }
 
 .stock-symbol {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #2d3748;
+  color: white;
 }
 
 .stock-name {
   font-size: 0.875rem;
-  color: #4a5568;
+  color: #8888a0;
   margin-bottom: 1rem;
   white-space: nowrap;
   overflow: hidden;
@@ -377,14 +382,14 @@ h2 {
   display: flex;
   gap: 0.5rem;
   font-size: 0.75rem;
-  color: #718096;
+  color: #8888a0;
 }
 
 .stock-detail-card {
-  background-color: white;
-  border-radius: 8px;
+  background-color: #151933;
+  border: 1px solid #7c3aed;
+  border-radius: 0.5rem;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .stock-header {
@@ -397,12 +402,12 @@ h2 {
 .stock-symbol-large {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #2d3748;
+  color: white;
 }
 
 .stock-name-large {
   font-size: 1rem;
-  color: #4a5568;
+  color: #8888a0;
 }
 
 .stock-price-container {
@@ -412,7 +417,7 @@ h2 {
 .stock-price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #2d3748;
+  color: white;
 }
 
 .stock-change {
@@ -420,22 +425,22 @@ h2 {
 }
 
 .stock-change.positive {
-  color: #48bb78;
+  color: #10b981;
 }
 
 .stock-change.negative {
-  color: #f56565;
+  color: #ef4444;
 }
 
 .trading-info {
   font-size: 0.75rem;
-  color: #718096;
+  color: #8888a0;
   margin-bottom: 1.5rem;
 }
 
 .buy-form {
-  background-color: #f7fafc;
-  border-radius: 8px;
+  background-color: #1a1f3d;
+  border-radius: 0.5rem;
   padding: 1.5rem;
 }
 
@@ -446,42 +451,49 @@ h2 {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #4a5568;
+  color: #8888a0;
 }
 
 .form-group input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
+  background-color: #0a0d1c;
+  border: 1px solid #2a2f4c;
+  border-radius: 0.25rem;
+  color: white;
   font-size: 1rem;
 }
 
 .total-cost {
   margin-bottom: 1rem;
   font-size: 0.875rem;
-  color: #4a5568;
+  color: #8888a0;
 }
 
 .buy-button {
-  background-color: #48bb78;
+  background-color: #10b981;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  border-radius: 4px;
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: background-color 0.3s;
   width: 100%;
 }
 
 .buy-button:hover {
-  background-color: #38a169;
+  background-color: #059669;
 }
 
 .buy-button:disabled {
-  background-color: #a0aec0;
+  background-color: #2a2f4c;
   cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .stock-search-container {
+    padding: 1rem;
+  }
 }
 </style>
