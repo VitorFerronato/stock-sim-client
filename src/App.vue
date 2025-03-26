@@ -3,7 +3,7 @@
     <header>
       <nav class="navbar">
         <div class="logo">
-          <router-link to="/">InvestSim</router-link>
+          <router-link to="/">StockSim</router-link>
         </div>
 
         <div class="nav-links">
@@ -26,10 +26,6 @@
     <main>
       <router-view />
     </main>
-
-    <footer>
-      <p>&copy; 2024 InvestSim - Fictitious Investment Simulator</p>
-    </footer>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-card">
-      <h1>Login to InvestSim</h1>
+      <h1>Login to StockSim</h1>
 
       <form @submit.prevent="handleLogin">
         <div class="form-group">

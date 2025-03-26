@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <div class="hero">
-      <h1>Welcome to InvestSim</h1>
+      <h1>Welcome to StockSim</h1>
       <h2>Learn investing with zero risk using virtual currency</h2>
 
       <div class="features">
