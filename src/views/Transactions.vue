@@ -48,9 +48,9 @@
     </div>
 
     <div class="actions">
-      <button @click="$router.push('/dashboard')" class="back-button">
-        Back to dashboard
-      </button>
+      <router-link to="/dashboard">
+        <MvpButton title="Back to dashboard" />
+      </router-link>
     </div>
   </div>
 </template>
@@ -58,7 +58,7 @@
 <script setup>
 import { computed } from "vue";
 import { usePortfolioStore } from "../store/portfolio";
-
+import MvpButton from "../components/MvpButton.vue";
 const portfolioStore = usePortfolioStore();
 
 const sortedTransactions = computed(() => {
@@ -86,10 +86,10 @@ const formatDate = (dateString) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .transactions-container {
   padding: 2rem;
-  background-color: #0a0d1c;
+  background-color: $bg-color;
   min-height: 100vh;
   color: white;
 }
@@ -102,7 +102,7 @@ h1 {
 }
 
 .empty-transactions {
-  background-color: #f7fafc;
+  background-color: $bg-color-dark;
   border-radius: 8px;
   padding: 2rem;
   text-align: center;
@@ -111,12 +111,11 @@ h1 {
 
 .empty-transactions p {
   margin-bottom: 1rem;
-  color: #4a5568;
+  color: $white-color-light;
 }
 
 .transactions-content {
-  background-color: #151933;
-  border: 1px solid #7c3aed;
+  border: 1px solid $primary-color;
   border-radius: 0.5rem;
   overflow: hidden;
   margin-bottom: 2rem;
@@ -130,15 +129,15 @@ h1 {
 .transactions-table th {
   text-align: left;
   padding: 1rem;
-  color: #8888a0;
+  color: $primary-color;
   font-weight: normal;
-  border-bottom: 1px solid #2a2f4c;
+  border-bottom: 1px solid $bg-color-dark;
 }
 
 .transactions-table td {
   padding: 1rem;
   color: white;
-  border-bottom: 1px solid #2a2f4c;
+  border-bottom: 1px solid $bg-color-dark;
 }
 
 .transaction-type {
@@ -161,20 +160,6 @@ h1 {
 .actions {
   display: flex;
   justify-content: flex-end;
-}
-
-.back-button {
-  background-color: #7c3aed;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.back-button:hover {
-  background-color: #6d28d9;
 }
 
 @media (max-width: 768px) {

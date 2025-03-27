@@ -2,14 +2,7 @@
   <div class="portfolio-container">
     <div class="header-actions">
       <h1>Your Portfolio</h1>
-      <button
-        @click="refreshPortfolio"
-        :disabled="isLoading"
-        class="refresh-button"
-      >
-        <span class="refresh-icon">⟳</span>
-        {{ isLoading ? "Refreshing..." : "Refresh Prices" }}
-      </button>
+      <MvpButton title="Refresh Prices" />
     </div>
 
     <!-- Portfolio Summary -->
@@ -141,32 +134,28 @@
 
             <div class="sell-section">
               <h3>Sell Shares</h3>
-              <div class="sell-input-group">
-                <label for="quantity">Quantity to sell</label>
-                <input
-                  id="quantity"
-                  type="number"
-                  v-model.number="quantity"
-                  min="1"
-                  :max="selectedStock.quantity"
-                  class="quantity-input"
-                />
-              </div>
+              <MvpTextfield
+                v-model.number="quantity"
+                :max="selectedStock.quantity"
+                @update:value="quantity = $event"
+                label="Quantity to sell"
+                type="number"
+                min="1"
+              />
+
               <div class="expected-return">
                 Expected return:
                 {{ formatCurrency(selectedStock.currentPrice * quantity) }}
               </div>
-              <button
-                @click="sellStock"
+              <MvpButton
+                title="Sell Shares"
                 :disabled="
                   isSelling ||
                   quantity <= 0 ||
                   quantity > selectedStock.quantity
                 "
-                class="sell-button"
-              >
-                Sell Shares
-              </button>
+                @click="sellStock"
+              />
             </div>
           </div>
         </div>
@@ -178,8 +167,10 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { usePortfolioStore } from "../store/portfolio";
-
+import MvpButton from "../components/MvpButton.vue";
+import MvpTextfield from "../components/MvpTextfield.vue";
 const portfolioStore = usePortfolioStore();
+
 const selectedStock = ref(null);
 const quantity = ref(0);
 const sellError = ref("");
@@ -261,10 +252,10 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .portfolio-container {
   padding: 2rem;
-  background-color: #0a0d1c;
+  background-color: $bg-color;
   min-height: 100vh;
   color: white;
 }
@@ -282,22 +273,6 @@ h1 {
   font-weight: normal;
 }
 
-.refresh-button {
-  background-color: #7c3aed;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.refresh-icon {
-  font-size: 1.2rem;
-}
-
 .portfolio-summary {
   display: flex;
   justify-content: space-between;
@@ -310,7 +285,7 @@ h1 {
 }
 
 .summary-item h3 {
-  color: #8888a0;
+  color: $white-color-light;
   font-size: 1.1rem;
   font-weight: normal;
   margin-bottom: 0.5rem;
@@ -325,58 +300,55 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 2rem;
-}
 
-.investments-section h2,
-.details-section h2 {
-  color: white;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
+  .investments-section h2,
+  .details-section h2 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .stock-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
-.stock-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+  .stock-item {
+    border: 1px solid $primary-color;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+  }
 
-.stock-item {
-  background-color: #151933;
-  border: 1px solid #7c3aed;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
-}
+  .stock-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 
-.stock-main {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
+  .stock-symbol {
+    font-weight: bold;
+  }
 
-.stock-symbol {
-  font-weight: bold;
-}
+  .stock-shares {
+    color: $white-color-light;
+    font-size: 0.9rem;
+  }
 
-.stock-shares {
-  color: #8888a0;
-  font-size: 0.9rem;
-}
-
-.stock-price {
-  text-align: right;
+  .stock-price {
+    text-align: right;
+  }
 }
 
 .price-change {
-  color: #8888a0;
+  color: $white-color-light;
   font-size: 0.9rem;
 }
 
 .details-container {
-  background-color: #151933;
-  border: 1px solid #7c3aed;
+  border: 1px solid $primary-color;
   border-radius: 0.5rem;
   padding: 2rem;
   height: 100%;
@@ -386,7 +358,7 @@ h1 {
 }
 
 .select-prompt {
-  color: #8888a0;
+  color: $white-color-light;
   text-align: center;
 }
 
@@ -395,15 +367,13 @@ h1 {
 }
 
 .detail-card {
-  background-color: #151933;
-  border: 1px solid #7c3aed;
+  border: 1px solid $primary-color;
   border-radius: 0.5rem;
   padding: 2rem;
 }
 
 .stock-symbol {
   font-size: 1.5rem;
-  margin-bottom: 2rem;
   color: white;
 }
 
@@ -427,7 +397,7 @@ h1 {
 }
 
 .detail-label {
-  color: #8888a0;
+  color: $white-color-light;
   font-size: 0.9rem;
 }
 
@@ -437,7 +407,7 @@ h1 {
 }
 
 .sell-section {
-  border-top: 1px solid #2a2f4c;
+  border-top: 1px solid $primary-color;
   padding-top: 2rem;
 }
 
@@ -455,13 +425,13 @@ h1 {
 }
 
 .sell-input-group label {
-  color: #8888a0;
+  color: $white-color-light;
   font-size: 0.9rem;
 }
 
 .quantity-input {
-  background-color: #0a0d1c;
-  border: 1px solid #2a2f4c;
+  background-color: $bg-color;
+  border: 1px solid $primary-color;
   border-radius: 0.25rem;
   color: white;
   padding: 0.75rem;
@@ -470,25 +440,9 @@ h1 {
 }
 
 .expected-return {
-  color: #8888a0;
+  color: $white-color-light;
   font-size: 0.9rem;
   margin-bottom: 1rem;
-}
-
-.sell-button {
-  background-color: #7c3aed;
-  color: white;
-  border: none;
-  border-radius: 0.25rem;
-  padding: 0.75rem;
-  width: 100%;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.sell-button:disabled {
-  background-color: #2a2f4c;
-  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {

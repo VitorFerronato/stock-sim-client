@@ -8,3 +8,13 @@ $font-family-base: "Montserrat", sans-serif;
   padding: 0;
   box-sizing: border-box;
 }
+
+a,
+router-link {
+  text-decoration: none;
+  color: $white-color;
+  transition: color 0.3s;
+  &:hover {
+    color: $primary-color;
+  }
+}

@@ -40,7 +40,7 @@
       <div class="login-link">
         <p>
           Already have an account?
-          <a href="#" @click.prevent="navigateToLogin">Login here</a>
+          <router-link to="/login">Login here</router-link>
         </p>
       </div>
     </div>
@@ -54,15 +54,16 @@ import { useAuthStore } from "../store/auth";
 import { usePortfolioStore } from "../store/portfolio";
 import MvpTextfield from "../components/MvpTextfield.vue";
 import MvpButton from "../components/MvpButton.vue";
+
+const router = useRouter();
+const authStore = useAuthStore();
+const portfolioStore = usePortfolioStore();
+
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
 const error = ref("");
 const isLoading = ref(false);
-
-const router = useRouter();
-const authStore = useAuthStore();
-const portfolioStore = usePortfolioStore();
 
 const handleRegister = async () => {
   if (!email.value || !password.value || !confirmPassword.value) {
@@ -92,10 +93,6 @@ const handleRegister = async () => {
   } finally {
     isLoading.value = false;
   }
-};
-
-const navigateToLogin = () => {
-  router.push("/login");
 };
 </script>
 

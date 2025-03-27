@@ -4,6 +4,12 @@
       <span class="logo-text">Stock<span class="logo-accent">Sim</span></span>
     </router-link>
 
+    <div class="header-links">
+      <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/portfolio">Portfolio</router-link>
+      <router-link to="/transactions">Transactions</router-link>
+    </div>
+
     <div v-if="!authStore.isAuthenticated" class="header-buttons">
       <router-link to="/register">
         <MvpButton title="Register" outlined />
@@ -87,6 +93,11 @@ const logout = () => {
 }
 
 .header-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.header-links {
   display: flex;
   gap: 1rem;
 }

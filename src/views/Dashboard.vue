@@ -3,10 +3,10 @@
     <!-- Header Section -->
     <div class="header">
       <h1>Welcome, {{ userName }}!</h1>
-      <p class="subtitle">Here's your investment summary</p>
-      <button class="refresh-btn" @click="refreshPortfolio">
-        <span class="refresh-icon">⟳</span> Refresh portfolio
-      </button>
+      <div class="header-buttons">
+        <p class="subtitle">Here's your investment summary</p>
+        <MvpButton title="Refresh portfolio" />
+      </div>
     </div>
 
     <!-- Summary Cards -->
@@ -81,62 +81,62 @@
 
     <!-- Action Buttons -->
     <div class="action-buttons">
-      <button class="manage-btn">Manage Portfolio</button>
-      <button class="buy-btn">Buy Stocks</button>
+      <router-link to="/portfolio">
+        <MvpButton title="Sell Stocks" outlined />
+      </router-link>
+      <router-link to="/search">
+        <MvpButton title="Buy Stocks" />
+      </router-link>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "Dashboard",
-  data() {
-    return {
-      userName: "Vitor Ferronato",
-      totalBalance: 100000.0,
-      availableCash: 99160.0,
-      investedAmount: 840.0,
-      portfolioValue: 840.0,
-      totalGainLoss: 25.94,
-      gainLossPercentage: 2.35,
-      stocksHeld: 2,
-      portfolio: [
-        {
-          symbol: "PETR4F.SAO",
-          quantity: 10,
-          purchasePrice: 37.04,
-          currentPrice: 37.04,
-          totalValue: 370.4,
-          gainLoss: 0.0,
-          gainLossPercentage: 0.0,
-        },
-        {
-          symbol: "WEGE3F.SAO",
-          quantity: 10,
-          purchasePrice: 46.96,
-          currentPrice: 46.96,
-          totalValue: 469.6,
-          gainLoss: 0.0,
-          gainLossPercentage: 0.0,
-        },
-      ],
-    };
+<script setup>
+import { ref, computed } from "vue";
+import { useAuthStore } from "../store/auth";
+import MvpButton from "../components/MvpButton.vue";
+
+const authStore = useAuthStore();
+
+const userName = ref(authStore.user?.email || "");
+const portfolio = ref([
+  {
+    symbol: "PETR4F.SAO",
+    quantity: 10,
+    purchasePrice: 37.04,
+    currentPrice: 37.04,
+    totalValue: 370.4,
+    gainLoss: 0.0,
+    gainLossPercentage: 0.0,
   },
-  methods: {
-    formatNumber(value) {
-      return value.toFixed(2).replace(".", ",");
-    },
-    refreshPortfolio() {
-      // Implement refresh logic here
-    },
+  {
+    symbol: "WEGE3F.SAO",
+    quantity: 10,
+    purchasePrice: 46.96,
+    currentPrice: 46.96,
+    totalValue: 469.6,
+    gainLoss: 0.0,
+    gainLossPercentage: 0.0,
   },
+]);
+
+const totalBalance = computed(() => 100000.0);
+const availableCash = computed(() => 99160.0);
+const investedAmount = computed(() => 840.0);
+const portfolioValue = computed(() => 840.0);
+const totalGainLoss = computed(() => 25.94);
+const gainLossPercentage = computed(() => 2.35);
+const stocksHeld = computed(() => portfolio.value.length);
+
+const formatNumber = (value) => {
+  return value.toFixed(2).replace(".", ",");
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .dashboard {
   padding: 2rem;
-  background-color: #0a0d1c;
+  background-color: $bg-color;
   color: white;
   min-height: 100vh;
 }
@@ -152,22 +152,14 @@ export default {
 }
 
 .subtitle {
-  color: #8888a0;
+  color: $white-color-light;
 }
 
-.refresh-btn {
-  position: absolute;
-  right: 0;
-  top: 0;
-  background-color: #7c3aed;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
+.header-buttons {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .summary-grid {
@@ -175,17 +167,17 @@ export default {
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-bottom: 2rem;
-}
 
-.summary-card {
-  background-color: #151933;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-}
+  .summary-card {
+    background-color: $bg-color-dark;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+  }
 
-.summary-card h2 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
+  .summary-card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
 }
 
 .amount {
@@ -195,7 +187,7 @@ export default {
 }
 
 .description {
-  color: #8888a0;
+  color: $white-color-light;
   font-size: 0.9rem;
 }
 
@@ -205,20 +197,22 @@ export default {
 
 .portfolio-table {
   width: 100%;
-  border-collapse: collapse;
+  border: 1px solid $primary-color;
+  border-radius: 0.5rem;
   margin-top: 1rem;
-}
 
-.portfolio-table th {
-  text-align: left;
-  padding: 1rem;
-  color: #8888a0;
-  border-bottom: 1px solid #2a2f4c;
-}
+  th {
+    text-align: left;
+    padding: 1rem;
+    color: $primary-color;
+    border-bottom: 1px solid $bg-color-dark;
+    font-weight: 500;
+  }
 
-.portfolio-table td {
-  padding: 1rem;
-  border-bottom: 1px solid #2a2f4c;
+  td {
+    padding: 1rem;
+    border-bottom: 1px solid $bg-color-dark;
+  }
 }
 
 .action-buttons {
@@ -226,25 +220,5 @@ export default {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
-}
-
-.manage-btn,
-.buy-btn {
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.manage-btn {
-  background-color: transparent;
-  border: 1px solid #7c3aed;
-  color: #7c3aed;
-}
-
-.buy-btn {
-  background-color: #7c3aed;
-  border: none;
-  color: white;
 }
 </style>

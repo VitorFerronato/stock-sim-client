@@ -1,7 +1,12 @@
 <template>
   <div class="form-group">
     <label>{{ label }}</label>
-    <input :type="type" :placeholder="placeholder" />
+    <input
+      v-bind="$attrs"
+      :type="type"
+      :placeholder="placeholder"
+      @input="emit('update:modelValue', $event.target.value)"
+    />
   </div>
 </template>
 
@@ -20,6 +25,8 @@ const props = defineProps({
     default: "",
   },
 });
+
+const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>

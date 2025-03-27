@@ -33,7 +33,7 @@
       <div class="register-link">
         <p>
           Don't have an account?
-          <a href="#" @click.prevent="navigateToRegister">Register here</a>
+          <router-link to="/register">Register here</router-link>
         </p>
       </div>
     </div>
@@ -75,10 +75,6 @@ const handleLogin = async () => {
   } finally {
     isLoading.value = false;
   }
-};
-
-const navigateToRegister = () => {
-  router.push("/register");
 };
 </script>
 
