@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="login-card">
-      <h1>Login to StockSim</h1>
+      <h1>Login to <span class="accent">Stock</span>Sim</h1>
 
       <form @submit.prevent="handleLogin">
         <div class="form-group">
@@ -30,7 +30,7 @@
           {{ error }}
         </div>
 
-        <button type="submit" class="primary-button" :disabled="isLoading">
+        <button type="submit" class="login-button" :disabled="isLoading">
           {{ isLoading ? "Logging in..." : "Login" }}
         </button>
       </form>
@@ -91,22 +91,31 @@ const navigateToRegister = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 70vh;
+  min-height: 100vh;
+  background-color: #0a1126;
+  padding: 1rem;
 }
 
 .login-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  background-color: rgba(18, 29, 89, 0.3);
+  border: 1px solid rgba(149, 56, 242, 0.3);
+  border-radius: 12px;
+  padding: 2.5rem;
   width: 100%;
   max-width: 400px;
+  backdrop-filter: blur(10px);
 }
 
 .login-card h1 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2d3748;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.accent {
+  color: #9538f2;
 }
 
 .form-group {
@@ -116,53 +125,71 @@ const navigateToRegister = () => {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #4a5568;
+  font-weight: 400;
+  color: #bab9b9;
+  font-size: 0.9rem;
 }
 
 .form-group input {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
-  font-size: 1rem;
+  background-color: rgba(18, 29, 89, 0.4);
+  border: 1px solid rgba(149, 56, 242, 0.3);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #fff;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #9538f2;
+}
+
+.form-group input::placeholder {
+  color: #bab9b9;
+  opacity: 0.5;
 }
 
 .error-message {
-  color: #e53e3e;
+  color: #ff4d4d;
   margin-bottom: 1rem;
   font-size: 0.875rem;
 }
 
-.primary-button {
-  background-color: #4299e1;
+.login-button {
+  background-color: #9538f2;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
+  font-size: 0.9rem;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s;
   width: 100%;
+  font-weight: 500;
 }
 
-.primary-button:hover {
-  background-color: #3182ce;
+.login-button:hover {
+  background-color: #8429e0;
 }
 
-.primary-button:disabled {
-  background-color: #a0aec0;
+.login-button:disabled {
+  background-color: rgba(149, 56, 242, 0.5);
   cursor: not-allowed;
 }
 
 .register-link {
   text-align: center;
   margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: #bab9b9;
 }
 
 .register-link a {
-  color: #4299e1;
+  color: #9538f2;
   text-decoration: none;
+  margin-left: 0.25rem;
 }
 
 .register-link a:hover {

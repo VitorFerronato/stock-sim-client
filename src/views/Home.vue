@@ -55,42 +55,30 @@
       </div>
 
       <div class="cta-buttons">
-        <button
-          v-if="!authStore.isLoggedIn"
-          class="get-started-btn"
-          @click="navigateToRegister"
-        >
-          Get started
-        </button>
-        <button v-else class="dashboard-btn" @click="navigateToDashboard">
-          Go to Dashboard
-        </button>
+        <router-link v-if="!authStore.isAuthenticated" to="/register">
+          <MvpButton title="Get started" />
+        </router-link>
+
+        <router-link v-else to="/dashboard">
+          <MvpButton title="Go to Dashboard" />
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
-
-const router = useRouter();
+import MvpButton from "../components/MvpButton.vue";
 const authStore = useAuthStore();
-
-const navigateToRegister = () => {
-  router.push("/register");
-};
-
-const navigateToLogin = () => {
-  router.push("/login");
-};
-
-const navigateToDashboard = () => {
-  router.push("/dashboard");
-};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.home-container {
+  margin: 0 auto;
+  padding: 2rem 122px;
+}
+
 .nav {
   display: flex;
   justify-content: space-between;
@@ -110,45 +98,22 @@ const navigateToDashboard = () => {
   gap: 1rem;
 }
 
-.register-btn {
-  background-color: transparent;
-  color: #b794f4;
-  border: 1px solid #b794f4;
-  padding: 0.5rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.login-btn {
-  background-color: #9f7aea;
-  color: white;
-  border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.home-container {
-  margin: 0 auto;
-  padding: 2rem 8rem;
-}
-
 .hero {
   text-align: center;
-  padding: 3rem 1rem;
+  padding: 2rem 1rem;
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 50px;
+  font-weight: 500;
   margin-bottom: 1rem;
   color: white;
 }
 
 .hero h2 {
-  font-size: 1.5rem;
-  color: #a0aec0;
+  font-size: 24px;
+  font-weight: 500;
+  color: $white-color-light;
   margin-bottom: 4rem;
 }
 
@@ -162,8 +127,7 @@ const navigateToDashboard = () => {
 .feature-card {
   padding: 2rem;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid #b794f4;
+  border: 1px solid $primary-color;
   transition: transform 0.3s;
 }
 
@@ -178,18 +142,19 @@ const navigateToDashboard = () => {
 }
 
 .feature-card p {
-  color: #a0aec0;
+  color: $white-color-light;
 }
 
 .how-it-works {
-  padding: 4rem 1rem;
+  padding: 2rem 1rem;
   text-align: center;
 }
 
 .how-it-works h2 {
-  font-size: 2.5rem;
+  font-size: 32px;
+  font-weight: 500;
   margin-bottom: 3rem;
-  color: white;
+  color: $white-color-light;
 }
 
 .steps {
@@ -204,7 +169,7 @@ const navigateToDashboard = () => {
 }
 
 .step-number {
-  background-color: #9f7aea;
+  background-color: $primary-color;
   color: white;
   width: 50px;
   height: 50px;
@@ -224,11 +189,11 @@ const navigateToDashboard = () => {
 }
 
 .step p {
-  color: #a0aec0;
+  color: $white-color-light;
 }
 
 .get-started-btn {
-  background-color: #9f7aea;
+  background-color: $primary-color;
   color: white;
   border: none;
   padding: 0.75rem 2rem;

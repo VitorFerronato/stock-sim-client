@@ -3,9 +3,11 @@ import App from "./App.vue";
 import router from "./router";
 import pinia from "./store";
 import "./styles/main.scss";
+import { Icon } from "@iconify/vue";
 
 const app = createApp(App);
 
 app.use(pinia);
 app.use(router);
+app.component("Icon", Icon);
 app.mount("#app");

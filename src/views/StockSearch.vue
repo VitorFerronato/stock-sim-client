@@ -51,36 +51,36 @@
       </div>
     </div>
 
-    <div v-if="selectedStock" class="stock-detail-section">
+    <div class="stock-detail-section">
       <h2>Stock Details</h2>
 
       <div class="stock-detail-card">
         <div class="stock-header">
           <div>
-            <div class="stock-symbol-large">{{ selectedStock.symbol }}</div>
-            <div class="stock-name-large">{{ selectedStock.name }}</div>
+            <div class="stock-symbol-large">{{ selectedStock?.symbol }}</div>
+            <div class="stock-name-large">{{ selectedStock?.name }}</div>
           </div>
           <div class="stock-price-container">
             <div class="stock-price">
-              {{ formatCurrency(selectedStock.price) }}
+              {{ formatCurrency(selectedStock?.price) }}
             </div>
             <div
               class="stock-change"
               :class="{
-                positive: selectedStock.change > 0,
-                negative: selectedStock.change < 0,
+                positive: selectedStock?.change > 0,
+                negative: selectedStock?.change < 0,
               }"
             >
-              {{ selectedStock.change > 0 ? "+" : ""
-              }}{{ selectedStock.change.toFixed(2) }} ({{
-                selectedStock.change > 0 ? "+" : ""
-              }}{{ selectedStock.changePercent.toFixed(2) }}%)
+              {{ selectedStock?.change > 0 ? "+" : ""
+              }}{{ selectedStock?.change.toFixed(2) }} ({{
+                selectedStock?.change > 0 ? "+" : ""
+              }}{{ selectedStock?.changePercent.toFixed(2) }}%)
             </div>
           </div>
         </div>
 
         <div class="trading-info">
-          <p>As of {{ selectedStock.latestTradingDay }}</p>
+          <p>As of {{ selectedStock?.latestTradingDay }}</p>
         </div>
 
         <div class="buy-form">
