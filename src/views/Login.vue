@@ -4,35 +4,30 @@
       <h1>Login to <span class="accent">Stock</span>Sim</h1>
 
       <form @submit.prevent="handleLogin">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            v-model="email"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
+        <MvpTextfield
+          v-model="email"
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+        />
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            v-model="password"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
+        <MvpTextfield
+          v-model="password"
+          label="Password"
+          type="password"
+          placeholder="Enter your password"
+        />
 
         <div v-if="error" class="error-message">
           {{ error }}
         </div>
 
-        <button type="submit" class="login-button" :disabled="isLoading">
-          {{ isLoading ? "Logging in..." : "Login" }}
-        </button>
+        <MvpButton
+          :isDisabled="isLoading"
+          @click="handleLogin"
+          title="Login"
+          style="width: 100%"
+        />
       </form>
 
       <div class="register-link">
@@ -49,7 +44,8 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
-
+import MvpTextfield from "../components/MvpTextfield.vue";
+import MvpButton from "../components/MvpButton.vue";
 const email = ref("");
 const password = ref("");
 const error = ref("");
@@ -86,18 +82,17 @@ const navigateToRegister = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #0a1126;
+  background-color: $bg-color;
   padding: 1rem;
 }
 
 .login-card {
-  background-color: rgba(18, 29, 89, 0.3);
   border: 1px solid rgba(149, 56, 242, 0.3);
   border-radius: 12px;
   padding: 2.5rem;
@@ -115,40 +110,7 @@ const navigateToRegister = () => {
 }
 
 .accent {
-  color: #9538f2;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 400;
-  color: #bab9b9;
-  font-size: 0.9rem;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: rgba(18, 29, 89, 0.4);
-  border: 1px solid rgba(149, 56, 242, 0.3);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  color: #fff;
-  transition: border-color 0.3s;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #9538f2;
-}
-
-.form-group input::placeholder {
-  color: #bab9b9;
-  opacity: 0.5;
+  color: $primary-color;
 }
 
 .error-message {
@@ -157,37 +119,15 @@ const navigateToRegister = () => {
   font-size: 0.875rem;
 }
 
-.login-button {
-  background-color: #9538f2;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 100%;
-  font-weight: 500;
-}
-
-.login-button:hover {
-  background-color: #8429e0;
-}
-
-.login-button:disabled {
-  background-color: rgba(149, 56, 242, 0.5);
-  cursor: not-allowed;
-}
-
 .register-link {
   text-align: center;
   margin-top: 1.5rem;
   font-size: 0.9rem;
-  color: #bab9b9;
+  color: $white-color-light;
 }
 
 .register-link a {
-  color: #9538f2;
+  color: $primary-color;
   text-decoration: none;
   margin-left: 0.25rem;
 }

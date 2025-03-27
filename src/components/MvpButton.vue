@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="{ outlined }">
+  <button class="button" :class="{ outlined, disabled: isDisabled }">
     {{ title }}
   </button>
 </template>
@@ -11,6 +11,10 @@ const props = defineProps({
     required: true,
   },
   outlined: {
+    type: Boolean,
+    default: false,
+  },
+  isDisabled: {
     type: Boolean,
     default: false,
   },
@@ -29,6 +33,11 @@ const props = defineProps({
 
   &:hover {
     background-color: $primary-color-dark;
+  }
+
+  &:disabled {
+    background-color: $primary-color-dark;
+    cursor: not-allowed;
   }
 
   &.outlined {

@@ -4,46 +4,37 @@
       <h1>Create an <span class="accent">Account</span></h1>
 
       <form @submit.prevent="handleRegister">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            v-model="email"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
+        <MvpTextfield
+          v-model="email"
+          label="Email"
+          type="email"
+          placeholder="Enter your email"
+        />
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            v-model="password"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
+        <MvpTextfield
+          v-model="password"
+          label="Password"
+          type="password"
+          placeholder="Enter your password"
+        />
 
-        <div class="form-group">
-          <label for="confirmPassword">Confirm password</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            v-model="confirmPassword"
-            placeholder="Confirm your password"
-            required
-          />
-        </div>
+        <MvpTextfield
+          v-model="confirmPassword"
+          label="Confirm password"
+          type="password"
+          placeholder="Confirm your password"
+        />
 
         <div v-if="error" class="error-message">
           {{ error }}
         </div>
 
-        <button type="submit" class="register-button" :disabled="isLoading">
-          {{ isLoading ? "Creating account..." : "Register" }}
-        </button>
+        <MvpButton
+          title="Register"
+          :isDisabled="isLoading"
+          @click="handleRegister"
+          style="width: 100%"
+        />
       </form>
 
       <div class="login-link">
@@ -61,7 +52,8 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
 import { usePortfolioStore } from "../store/portfolio";
-
+import MvpTextfield from "../components/MvpTextfield.vue";
+import MvpButton from "../components/MvpButton.vue";
 const email = ref("");
 const password = ref("");
 const confirmPassword = ref("");
@@ -107,19 +99,18 @@ const navigateToLogin = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #0a1126;
+  background-color: $bg-color;
   padding: 1rem;
 }
 
 .register-card {
-  background-color: rgba(18, 29, 89, 0.3);
-  border: 1px solid rgba(149, 56, 242, 0.3);
+  border: 1px solid $primary-color;
   border-radius: 12px;
   padding: 2.5rem;
   width: 100%;
@@ -130,13 +121,13 @@ const navigateToLogin = () => {
 .register-card h1 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #fff;
+  color: $white-color;
   font-size: 1.5rem;
   font-weight: 500;
 }
 
 .accent {
-  color: #9538f2;
+  color: $primary-color;
 }
 
 .form-group {
@@ -147,29 +138,8 @@ const navigateToLogin = () => {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 400;
-  color: #bab9b9;
+  color: $white-color-light;
   font-size: 0.9rem;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: rgba(18, 29, 89, 0.4);
-  border: 1px solid rgba(149, 56, 242, 0.3);
-  border-radius: 6px;
-  font-size: 0.9rem;
-  color: #fff;
-  transition: border-color 0.3s;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #9538f2;
-}
-
-.form-group input::placeholder {
-  color: #bab9b9;
-  opacity: 0.5;
 }
 
 .error-message {
@@ -178,37 +148,15 @@ const navigateToLogin = () => {
   font-size: 0.875rem;
 }
 
-.register-button {
-  background-color: #9538f2;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.9rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 100%;
-  font-weight: 500;
-}
-
-.register-button:hover {
-  background-color: #8429e0;
-}
-
-.register-button:disabled {
-  background-color: rgba(149, 56, 242, 0.5);
-  cursor: not-allowed;
-}
-
 .login-link {
   text-align: center;
   margin-top: 1.5rem;
   font-size: 0.9rem;
-  color: #bab9b9;
+  color: $white-color-light;
 }
 
 .login-link a {
-  color: #9538f2;
+  color: $primary-color;
   text-decoration: none;
   margin-left: 0.25rem;
 }
