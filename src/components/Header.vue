@@ -6,6 +6,7 @@
 
     <div class="header-links">
       <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/search">Stock Search</router-link>
       <router-link to="/portfolio">Portfolio</router-link>
       <router-link to="/transactions">Transactions</router-link>
     </div>

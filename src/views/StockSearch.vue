@@ -1,121 +1,78 @@
 <template>
   <div class="stock-search-container">
+    <!-- Header Section -->
     <h1>Search and Buy Stocks</h1>
 
+    <!-- Search Section -->
     <div class="search-card">
       <div class="search-form">
-        <input
-          type="text"
+        <MvpTextField
           v-model="searchQuery"
-          placeholder="Search for a stock symbol or company name"
           @keyup.enter="searchStocks"
+          label="Search for stocks"
+          placeholder="Search for stocks"
+          style="width: 400px"
         />
-        <button
-          @click="searchStocks"
+
+        <MvpButton
+          title="Search"
           :disabled="isSearching"
+          @click="searchStocks"
           class="search-button"
-        >
-          {{ isSearching ? "Searching..." : "Search" }}
-        </button>
+        />
       </div>
-
-      <div v-if="searchError" class="error-message">
-        {{ searchError }}
-      </div>
-
       <div class="balance-indicator">
         <p>
-          Available Balance:
-          <strong>{{ formatCurrency(portfolioStore.availableBalance) }}</strong>
+          Available balance:
+          {{ formatCurrency(portfolioStore.availableBalance) }}
         </p>
       </div>
     </div>
 
-    <div v-if="searchResults.length > 0" class="search-results">
-      <h2>Search Results</h2>
-
-      <div class="results-grid">
-        <div
-          v-for="stock in searchResults"
-          :key="stock.symbol"
-          class="stock-card"
-          @click="selectStock(stock)"
-        >
-          <div class="stock-symbol">{{ stock.symbol }}</div>
-          <div class="stock-name">{{ stock.name }}</div>
-          <div class="stock-details">
-            <span>{{ stock.type }}</span>
-            <span>{{ stock.region }}</span>
+    <!-- Results Section -->
+    <div class="results-container">
+      <!-- Left side - Results -->
+      <div class="results-section">
+        <h2>Results</h2>
+        <div class="results-grid">
+          <div
+            v-for="stock in searchResults"
+            :key="stock.symbol"
+            class="stock-card"
+            @click="selectStock(stock)"
+          >
+            <div class="stock-symbol">{{ stock.symbol }}</div>
+            <div class="stock-name">{{ stock.name }}</div>
+            <div class="stock-details">Equity Brazil/sao paulo</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="stock-detail-section">
-      <h2>Stock Details</h2>
-
-      <div class="stock-detail-card">
-        <div class="stock-header">
-          <div>
-            <div class="stock-symbol-large">{{ selectedStock?.symbol }}</div>
-            <div class="stock-name-large">{{ selectedStock?.name }}</div>
-          </div>
-          <div class="stock-price-container">
-            <div class="stock-price">
-              {{ formatCurrency(selectedStock?.price) }}
+      <!-- Right side - Stock Details -->
+      <div class="stock-details-section">
+        <h2>Stock Details</h2>
+        <div class="stock-detail-card">
+          <div class="stock-header">
+            <div class="stock-info">
+              <div class="stock-symbol-large">WEGE3F.SAO</div>
+              <div class="stock-name-large">WEGE3F</div>
             </div>
-            <div
-              class="stock-change"
-              :class="{
-                positive: selectedStock?.change > 0,
-                negative: selectedStock?.change < 0,
-              }"
-            >
-              {{ selectedStock?.change > 0 ? "+" : ""
-              }}{{ selectedStock?.change.toFixed(2) }} ({{
-                selectedStock?.change > 0 ? "+" : ""
-              }}{{ selectedStock?.changePercent.toFixed(2) }}%)
+            <div class="price-info">
+              <div class="current-price">$ 43,03</div>
+              <div class="price-change positive">+0,20 % (+0.43%)</div>
             </div>
           </div>
-        </div>
 
-        <div class="trading-info">
-          <p>As of {{ selectedStock?.latestTradingDay }}</p>
-        </div>
-
-        <div class="buy-form">
-          <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input
-              id="quantity"
-              type="number"
-              v-model.number="quantity"
-              min="1"
-              step="1"
-            />
-          </div>
-
-          <div class="total-cost">
-            <p>
-              Total Cost: <strong>{{ formatCurrency(totalCost) }}</strong>
-            </p>
-            <p v-if="!canAfford" class="error-message">Insufficient balance</p>
-          </div>
-
-          <button
-            @click="buyStock"
-            :disabled="isBuying || !canAfford"
-            class="buy-button"
-          >
-            {{ isBuying ? "Processing..." : "Buy Stock" }}
-          </button>
-
-          <div v-if="buyError" class="error-message">
-            {{ buyError }}
-          </div>
-
-          <div v-if="buySuccess" class="success-message">
-            {{ buySuccess }}
+          <div class="buy-section">
+            <h3>Buy Shares</h3>
+            <div class="quantity-input">
+              <label>Quantity to buy</label>
+              <input type="text" placeholder="Ex: 1" />
+            </div>
+            <div class="total-cost">
+              <span>Total cost: $46,96</span>
+            </div>
+            <button class="buy-shares-button">Buy Shares</button>
           </div>
         </div>
       </div>
@@ -127,10 +84,23 @@
 import { ref, computed } from "vue";
 import { stockApi } from "../api/stockApi";
 import { usePortfolioStore } from "../store/portfolio";
+import MvpTextField from "../components/MvpTextField.vue";
+import MvpButton from "../components/MvpButton.vue";
 
 const searchQuery = ref("");
-const searchResults = ref([]);
-const selectedStock = ref(null);
+const searchResults = ref([
+  { symbol: "WEGE3 F", name: "wege3", type: "equity" },
+  { symbol: "WEGE3 F", name: "wege3", type: "equity" },
+]);
+const selectedStock = ref({
+  symbol: "WEGE3 F",
+  name: "wege3",
+  type: "equity",
+  price: 100,
+  change: 10,
+  changePercent: 10,
+  latestTradingDay: "2021-01-01",
+});
 const isSearching = ref(false);
 const searchError = ref("");
 
@@ -261,12 +231,31 @@ const formatCurrency = (value) => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .stock-search-container {
   padding: 2rem;
-  background-color: #0a0d1c;
+  background-color: $bg-color;
   min-height: 100vh;
   color: white;
+}
+
+.search-card {
+  background-color: $bg-color;
+  border: 1px solid $primary-color;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.results-container {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.results-section,
+.stock-details-section {
+  flex: 1;
 }
 
 h1 {
@@ -276,224 +265,165 @@ h1 {
   font-weight: normal;
 }
 
-h2 {
-  color: white;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.search-card {
-  background-color: #151933;
-  border: 1px solid #7c3aed;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.search-form {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.search-form input {
-  flex: 1;
-  padding: 0.75rem;
-  background-color: #0a0d1c;
-  border: 1px solid #2a2f4c;
-  border-radius: 0.25rem;
-  color: white;
-  font-size: 1rem;
-}
-
-.search-button {
-  background-color: #7c3aed;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.search-button:hover {
-  background-color: #6d28d9;
-}
-
-.search-button:disabled {
-  background-color: #2a2f4c;
-  cursor: not-allowed;
-}
-
-.error-message {
-  color: #ef4444;
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.success-message {
-  color: #10b981;
-  margin-top: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.balance-indicator {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  text-align: right;
-  color: #8888a0;
-}
-
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
 .stock-card {
-  background-color: #151933;
-  border: 1px solid #7c3aed;
+  width: 300px;
+  background-color: $bg-color;
+  border: 1px solid $primary-color;
   border-radius: 0.5rem;
-  padding: 1.5rem;
+  padding: 1rem;
   cursor: pointer;
-  transition: transform 0.3s;
-}
+  transition: all 0.2s ease;
 
-.stock-card:hover {
-  transform: translateY(-5px);
-  background-color: #1a1f3d;
-}
+  &:hover {
+    transform: translateY(-2px);
+    border-color: $primary-color;
+  }
 
-.stock-symbol {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: white;
-}
+  .stock-symbol {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: white;
+  }
 
-.stock-name {
-  font-size: 0.875rem;
-  color: #8888a0;
-  margin-bottom: 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .stock-name {
+    font-size: 0.875rem;
+    color: $white-color-light;
+    margin-top: 0.25rem;
+  }
 
-.stock-details {
-  display: flex;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  color: #8888a0;
+  .stock-details {
+    font-size: 0.75rem;
+    color: $white-color-light;
+    margin-top: 0.5rem;
+  }
 }
 
 .stock-detail-card {
-  background-color: #151933;
-  border: 1px solid #7c3aed;
+  background-color: $bg-color;
+  border: 1px solid $primary-color;
   border-radius: 0.5rem;
   padding: 1.5rem;
-}
 
-.stock-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.5rem;
-}
-
-.stock-symbol-large {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-}
-
-.stock-name-large {
-  font-size: 1rem;
-  color: #8888a0;
-}
-
-.stock-price-container {
-  text-align: right;
-}
-
-.stock-price {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: white;
-}
-
-.stock-change {
-  font-size: 0.875rem;
-}
-
-.stock-change.positive {
-  color: #10b981;
-}
-
-.stock-change.negative {
-  color: #ef4444;
-}
-
-.trading-info {
-  font-size: 0.75rem;
-  color: #8888a0;
-  margin-bottom: 1.5rem;
-}
-
-.buy-form {
-  background-color: #1a1f3d;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-}
-
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #8888a0;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #0a0d1c;
-  border: 1px solid #2a2f4c;
-  border-radius: 0.25rem;
-  color: white;
-  font-size: 1rem;
-}
-
-.total-cost {
-  margin-bottom: 1rem;
-  font-size: 0.875rem;
-  color: #8888a0;
-}
-
-.buy-button {
-  background-color: #10b981;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  width: 100%;
-}
-
-.buy-button:hover {
-  background-color: #059669;
-}
-
-.buy-button:disabled {
-  background-color: #2a2f4c;
-  cursor: not-allowed;
-}
-
-@media (max-width: 768px) {
-  .stock-search-container {
-    padding: 1rem;
+  .stock-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
   }
+
+  .stock-symbol-large {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: white;
+  }
+
+  .stock-name-large {
+    font-size: 0.875rem;
+    color: $white-color-light;
+    margin-top: 0.25rem;
+  }
+
+  .price-info {
+    text-align: right;
+
+    .current-price {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: white;
+    }
+
+    .price-change {
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+
+      &.positive {
+        color: #10b981;
+      }
+
+      &.negative {
+        color: #ef4444;
+      }
+    }
+  }
+}
+
+.buy-section {
+  background-color: $bg-color;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+
+  h3 {
+    color: white;
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .quantity-input {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      color: $white-color-light;
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: $bg-color;
+      border: 1px solid $primary-color;
+      border-radius: 0.25rem;
+      color: white;
+      font-size: 1rem;
+    }
+  }
+
+  .total-cost {
+    font-size: 0.875rem;
+    color: $white-color-light;
+    margin-bottom: 1rem;
+  }
+
+  .buy-shares-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: $primary-color-dark;
+    }
+
+    &:disabled {
+      background-color: $primary-color-dark;
+      cursor: not-allowed;
+    }
+  }
+}
+.search-form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+p {
+  font-size: 14px;
+  margin-top: -1rem;
+  color: $white-color-light;
+}
+
+.results {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.results-grid {
+  display: flex;
+  gap: 1rem;
 }
 </style>
