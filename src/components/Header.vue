@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <router-link to="/" class="logo">
+    <router-link to="/home" class="logo">
       <span class="logo-text">Stock<span class="logo-accent">Sim</span></span>
     </router-link>
 

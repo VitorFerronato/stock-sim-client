@@ -12,6 +12,10 @@ const StockSearch = () => import("../views/StockSearch.vue");
 const routes = [
   {
     path: "/",
+    redirect: { name: "Dashboard" },
+  },
+  {
+    path: "/home",
     name: "Home",
     component: Home,
   },

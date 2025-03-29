@@ -88,19 +88,8 @@ import MvpTextField from "../components/MvpTextField.vue";
 import MvpButton from "../components/MvpButton.vue";
 
 const searchQuery = ref("");
-const searchResults = ref([
-  { symbol: "WEGE3 F", name: "wege3", type: "equity" },
-  { symbol: "WEGE3 F", name: "wege3", type: "equity" },
-]);
-const selectedStock = ref({
-  symbol: "WEGE3 F",
-  name: "wege3",
-  type: "equity",
-  price: 100,
-  change: 10,
-  changePercent: 10,
-  latestTradingDay: "2021-01-01",
-});
+const searchResults = ref([]);
+const selectedStock = ref({});
 const isSearching = ref(false);
 const searchError = ref("");
 
