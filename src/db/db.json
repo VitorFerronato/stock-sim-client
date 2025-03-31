@@ -1,0 +1,31 @@
+{
+  "summary": {
+    "totalBalance": 100000.0,
+    "availableCash": 99160.0,
+    "investedAmount": 840.0,
+    "portfolioValue": 840.0,
+    "totalGainLoss": 25.94,
+    "gainLossPercentage": 2.35,
+    "stocksHeld": 1
+  },
+  "portfolio": [
+    {
+      "symbol": "PETR4F.SAO",
+      "quantity": 10,
+      "purchasePrice": 37.04,
+      "currentPrice": 37.04,
+      "totalValue": 370.4,
+      "gainLoss": 0.0,
+      "gainLossPercentage": 0.0
+    },
+    {
+      "symbol": "WEGE3.SAO",
+      "quantity": 10,
+      "purchasePrice": 46.28,
+      "currentPrice": 46.28,
+      "totalValue": 462.8,
+      "gainLoss": 0.0,
+      "gainLossPercentage": 0.0
+    }
+  ]
+}

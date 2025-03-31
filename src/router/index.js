@@ -4,7 +4,7 @@ import { useAuthStore } from "../store/auth";
 const Home = () => import("../views/Home.vue");
 const Login = () => import("../views/Login.vue");
 const Register = () => import("../views/Register.vue");
-const Dashboard = () => import("../views/Dashboard.vue");
+const Dashboard = () => import("../views/Dashboard/DashboardView.vue");
 const Portfolio = () => import("../views/Portfolio.vue");
 const Transactions = () => import("../views/Transactions.vue");
 const StockSearch = () => import("../views/StockSearch.vue");
