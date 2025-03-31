@@ -5,6 +5,7 @@
       v-bind="$attrs"
       :type="type"
       :placeholder="placeholder"
+      hide-details="auto"
       @input="emit('update:modelValue', $event.target.value)"
     />
   </div>
@@ -30,10 +31,6 @@ const emit = defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;

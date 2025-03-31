@@ -7,7 +7,7 @@ const Register = () => import("../views/Register.vue");
 const Dashboard = () => import("../views/Dashboard/DashboardView.vue");
 const Portfolio = () => import("../views/Portfolio.vue");
 const Transactions = () => import("../views/Transactions.vue");
-const StockSearch = () => import("../views/StockSearch.vue");
+const StockSearch = () => import("../views/StockSearch/StockSearchView.vue");
 
 const routes = [
   {

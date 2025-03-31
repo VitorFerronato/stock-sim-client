@@ -1,9 +1,9 @@
 {
   "summary": {
-    "totalBalance": 100000.0,
-    "availableCash": 99160.0,
-    "investedAmount": 840.0,
-    "portfolioValue": 840.0,
+    "totalBalance": 100000,
+    "availableCash": 99160,
+    "investedAmount": 840,
+    "portfolioValue": 840,
     "totalGainLoss": 25.94,
     "gainLossPercentage": 2.35,
     "stocksHeld": 1
@@ -15,8 +15,9 @@
       "purchasePrice": 37.04,
       "currentPrice": 37.04,
       "totalValue": 370.4,
-      "gainLoss": 0.0,
-      "gainLossPercentage": 0.0
+      "gainLoss": 0,
+      "gainLossPercentage": 0,
+      "id": "d921"
     },
     {
       "symbol": "WEGE3.SAO",
@@ -24,8 +25,53 @@
       "purchasePrice": 46.28,
       "currentPrice": 46.28,
       "totalValue": 462.8,
-      "gainLoss": 0.0,
-      "gainLossPercentage": 0.0
+      "gainLoss": 0,
+      "gainLossPercentage": 0,
+      "id": "c919"
+    },
+    {
+      "id": "6874",
+      "symbol": "PETR4F.SAO",
+      "quantity": "10",
+      "purchasePrice": 37.04,
+      "currentPrice": 37.04,
+      "totalValue": 370.4,
+      "gainLoss": 0
+    },
+    {
+      "id": "aeaa",
+      "symbol": "PETR4F.SAO",
+      "quantity": "10",
+      "purchasePrice": 37.04,
+      "currentPrice": 37.04,
+      "totalValue": 370.4,
+      "gainLoss": 0
     }
-  ]
+  ],
+  "getStocks": [
+    {
+      "symbol": "PETR4F.SAO",
+      "name": "Petrobras",
+      "type": "Equity",
+      "region": "SAO",
+      "marketOpen": "09:00",
+      "marketClose": "18:00",
+      "timezone": "America/Sao_Paulo",
+      "currency": "BRL",
+      "matchScore": "0.0000",
+      "id": "d29d"
+    }
+  ],
+  "getStockPrice": {
+    "symbol": "PETR4F.SAO",
+    "open": 37.04,
+    "high": 37.04,
+    "low": 37.04,
+    "price": 37.04,
+    "volume": 37.04,
+    "latestTradingDay": "2025-03-31",
+    "previousClose": 37.04,
+    "change": 0,
+    "changePercent": 0
+  }
 }
