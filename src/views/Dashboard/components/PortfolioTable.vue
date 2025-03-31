@@ -59,7 +59,7 @@ const fetchPortfolio = async () => {
     const response = await stocksService.getPortfolio();
     portfolio.value = response.data;
   } catch (error) {
-    console.error("Error fetching portfolio:", error);
+    console.error("Error fetching portfolio testando:", error);
     portfolio.value = [];
   }
 
