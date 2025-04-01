@@ -13,6 +13,9 @@ export default {
   getStockPrice(symbol) {
     return apiClient.get(`/getStockPrice?symbol=${symbol}`);
   },
+  getTransactions() {
+    return apiClient.get("/transactions");
+  },
   buyShares(request) {
     return apiClient.post("/portfolio", request);
   },

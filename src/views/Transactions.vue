@@ -2,14 +2,30 @@
   <div class="transactions-container">
     <h1>Transaction History</h1>
 
-    <div
-      v-if="portfolioStore.transactions.length === 0"
-      class="empty-transactions"
-    >
+    <div v-if="!transactions.length" class="empty-transactions">
       <p>You don't have any transactions yet.</p>
       <router-link to="/search" class="primary-button"
         >Start Investing</router-link
       >
+    </div>
+
+    <div class="skeleton-loader" v-if="isLoading">
+      <table class="portfolio-table">
+        <thead>
+          <tr>
+            <th v-for="i in 6" :key="i">
+              <div class="skeleton-content"></div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="row in 4" :key="row">
+            <td v-for="col in 6" :key="col">
+              <div class="skeleton-content"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div v-else class="transactions-content">
@@ -17,7 +33,7 @@
         <thead>
           <tr>
             <th>Date</th>
-            <th>Qtde</th>
+            <th>Type</th>
             <th>Symbol</th>
             <th>Quantity</th>
             <th>Price</th>
@@ -25,8 +41,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(transaction, index) in sortedTransactions" :key="index">
-            <td>{{ formatDate(transaction.date) }}</td>
+          <tr v-for="(transaction, index) in transactions" :key="index">
+            <td>{{ transaction.date }}</td>
             <td>
               <span
                 class="transaction-type"
@@ -40,8 +56,8 @@
             </td>
             <td>{{ transaction.symbol }}</td>
             <td>{{ transaction.quantity }}</td>
-            <td>{{ formatCurrency(transaction.price) }}</td>
-            <td>{{ formatCurrency(transaction.totalAmount) }}</td>
+            <td>{{ transaction.purchasePrice }}</td>
+            <td>{{ transaction.totalAmount }}</td>
           </tr>
         </tbody>
       </table>
@@ -56,34 +72,31 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { usePortfolioStore } from "../store/portfolio";
 import MvpButton from "../components/MvpButton.vue";
-const portfolioStore = usePortfolioStore();
 
-const sortedTransactions = computed(() => {
-  return [...portfolioStore.transactions].sort((a, b) => {
-    return new Date(b.date) - new Date(a.date);
-  });
+import stocksService from "../services/stocks";
+
+import { ref, onMounted } from "vue";
+
+const isLoading = ref(false);
+const transactions = ref([]);
+
+const fetchTransactions = async () => {
+  isLoading.value = true;
+
+  try {
+    const response = await stocksService.getTransactions();
+    transactions.value = response?.data ?? [];
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+  }
+
+  isLoading.value = false;
+};
+
+onMounted(() => {
+  fetchTransactions();
 });
-
-const formatCurrency = (value) => {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
-};
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat("pt-BR", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
-};
 </script>
 
 <style lang="scss" scoped>
@@ -169,6 +182,32 @@ h1 {
 
   .transactions-table {
     min-width: 800px;
+  }
+}
+
+.skeleton-loader {
+  width: 100%;
+  margin-bottom: 2rem;
+
+  .skeleton-content {
+    width: 100%;
+    height: 1.5rem;
+    background: linear-gradient(90deg, #2c3e50 25%, #34495e 50%, #2c3e50 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 4px;
+  }
+
+  .portfolio-table {
+    width: 100%;
+    border: 1px solid $primary-color;
+    border-radius: 0.5rem;
+
+    th,
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid $bg-color-dark;
+    }
   }
 }
 </style>

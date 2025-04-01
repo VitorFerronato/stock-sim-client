@@ -46,6 +46,15 @@
       "currentPrice": 37.04,
       "totalValue": 370.4,
       "gainLoss": 0
+    },
+    {
+      "id": "4b60",
+      "symbol": "PETR4F.SAO",
+      "quantity": "20",
+      "purchasePrice": 37.04,
+      "currentPrice": 37.04,
+      "totalValue": 740.8,
+      "gainLoss": 0
     }
   ],
   "getStocks": [
@@ -73,5 +82,25 @@
     "previousClose": 37.04,
     "change": 0,
     "changePercent": 0
-  }
+  },
+  "transactions": [
+    {
+      "id": "d921",
+      "date": "2025-03-31",
+      "type": "SELL",
+      "symbol": "PETR4F.SAO",
+      "quantity": 10,
+      "purchasePrice": 37.04,
+      "totalAmount": 370.4
+    },
+    {
+      "id": "d921",
+      "date": "2025-03-31",
+      "type": "BUY",
+      "symbol": "PETR4F.SAO",
+      "quantity": 10,
+      "purchasePrice": 37.04,
+      "totalAmount": 370.4
+    }
+  ]
 }
